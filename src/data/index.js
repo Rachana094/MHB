@@ -1,6 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
-//  PERSONALISATION DATA  –  Fill in your own content here before running.
-// ─────────────────────────────────────────────────────────────────────────────
+// ── Imports ──────────────────────────────────────────────────────────────────
+import photo1 from '../assets/photo1.jpg';
+import photo2 from '../assets/photo2.jpg';
+import photo3 from '../assets/photo3.jpg';
 
 // ── Stage 1: Password ────────────────────────────────────────────────────────
 // The user must type this exact string (case-insensitive) to unlock the site.
@@ -41,7 +42,7 @@ export const photoBoothData = [
     id: 1,
     era: "Childhood",
     year: "Where it all began",
-    photoUrl: "/photo1.jpg",
+    photoUrl: photo1,
     photoAlt: "do you remember this day ?",
     caption: "Where it all began",
     story: "vand dina may be 3rd or 4th ansutte tht havattu school alli dance practice ge kardu irtare, and havattu nanu ninu full nedkond hogirtivi urinda bargur varguuuuu",
@@ -50,7 +51,7 @@ export const photoBoothData = [
     id: 2,
     era: "The Middle Years",
     year: "Growing pains",
-    photoUrl: "/photo2.jpg",
+    photoUrl: photo2,
     photoAlt: "Middle years photo",
     caption: "Growing pains & golden afternoons",
     story: "idu nenp idy ninge vand dina havattu van bandiralla en hagirutto ast nenp illa but nav ibru gate hatra hogirtivi alli halla dalli baro nerinalli vand yedi bandirutte ninu adunna nange hedidu kottu irtiya... nangu innu nenp ide adunna idkonke havttu est baya battidde anta!!",
@@ -59,12 +60,13 @@ export const photoBoothData = [
     id: 3,
     era: "Recent Chapter",
     year: "Recent",
-    photoUrl: "/photo3.jpg",
+    photoUrl: photo3,
     photoAlt: "Recent photo",
     caption: "The version of us we became",
     story: "one beautifull chapter that ended without the desination.... kelvandra runa devru aste kottirtne after tht it wil became the star in constillation ",
   },
 ];
+
 
 // ── Stage 4: Constellation ───────────────────────────────────────────────────
 // Positions are percentages (0-100) of the SVG/canvas area.
