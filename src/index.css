@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Dancing+Script:wght@600;700&display=swap');
+@import "tailwindcss";
+
+/* ── Design tokens ──────────────────────────────────────────── */
+:root {
+  --rose:      #FF6B9D;
+  --rose-deep: #E8336B;
+  --peach:     #FFB347;
+  --peach-dim: #E8900A;
+  --lavender:  #C084FC;
+  --sky:       #38BDF8;
+  --teal:      #2DD4BF;
+  --gold:      #FFD700;
+  --gold-warm: #FFA500;
+  --cream:     #FFF8F0;
+  --dark:      #0F0A1E;
+  --dark-card: #1A1030;
+  --dark-mid:  #231840;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--dark);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Custom scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0F0A1E; }
+::-webkit-scrollbar-thumb { background: #FF6B9D; border-radius: 2px; }
+
+/* ── Cursor blink ───────────────────────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor-blink { animation: blink 0.9s step-start infinite; }
+
+/* ── Smooth fade-in slide ───────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ── Float bob ──────────────────────────────────────────────── */
+@keyframes bob {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50%       { transform: translateY(-12px) rotate(1deg); }
+}
+.bob { animation: bob 3.5s ease-in-out infinite; }
+
+/* ── Shimmer text ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -300% center; }
+  100% { background-position:  300% center; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, #FFD700, #FF6B9D, #C084FC, #38BDF8, #FFD700, #FF6B9D);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ── Pulse ring ─────────────────────────────────────────────── */
+@keyframes pulseRing {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: pulseRing 1.6s ease-out infinite;
+}
+
+/* ── Confetti fall ──────────────────────────────────────────── */
+@keyframes confettiFall {
+  0%   { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(900deg) scale(0.5); opacity: 0; }
+}
+
+/* ── Candle flicker ─────────────────────────────────────────── */
+@keyframes flicker {
+  0%,100% { transform: scaleY(1) scaleX(1) rotate(-1deg); opacity:1; }
+  25%     { transform: scaleY(0.9) scaleX(1.07) rotate(2deg); opacity:.85; }
+  50%     { transform: scaleY(1.07) scaleX(0.96) rotate(-2deg); opacity:.95; }
+  75%     { transform: scaleY(0.95) scaleX(1.04) rotate(1deg); opacity:.9; }
+}
+.flicker { animation: flicker 0.35s ease-in-out infinite alternate; transform-origin: bottom center; }
+
+/* ── Star twinkle ───────────────────────────────────────────── */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.85); }
+  50%       { opacity: 1;    transform: scale(1.3); }
+}
+
+/* ── Lantern float ──────────────────────────────────────────── */
+@keyframes floatUp {
+  0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+  30%  { transform: translateY(-30vh) scale(0.95) rotate(3deg); opacity: 1; }
+  70%  { transform: translateY(-75vh) scale(0.75) rotate(-4deg); opacity: 0.7; }
+  100% { transform: translateY(-115vh) scale(0.4) rotate(6deg); opacity: 0; }
+}
+.lantern-fly { animation: floatUp 7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+
+/* ── Card flip ──────────────────────────────────────────────── */
+.perspective { perspective: 1200px; }
+.flip-card { transform-style: preserve-3d; transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1); }
+.flip-card.flipped { transform: rotateY(180deg); }
+.flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-back { transform: rotateY(180deg); }
+
+/* ── Gradient button base ───────────────────────────────────── */
+.btn-primary {
+  background: linear-gradient(135deg, #FF6B9D, #E8336B, #C084FC);
+  color: white;
+  border: none;
+  padding: 0.75rem 2.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  box-shadow: 0 4px 24px rgba(255,107,157,0.4);
+}
+.btn-primary:hover {
+  transform: scale(1.06) translateY(-2px);
+  filter: brightness(1.12);
+  box-shadow: 0 8px 36px rgba(255,107,157,0.55);
+}
+.btn-primary:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+/* ── Glass card ─────────────────────────────────────────────── */
+.glass {
+  background: rgba(26, 16, 48, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,107,157,0.2);
+  border-radius: 1.5rem;
+}
+
+/* ── Gradient border card ───────────────────────────────────── */
+.glow-card {
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #FF6B9D, #C084FC, #38BDF8, #2DD4BF);
+  z-index: -1;
+  opacity: 0.5;
+}
+
+/* ── Page-out ───────────────────────────────────────────────── */
+@keyframes pageOut { from { opacity:1; } to { opacity:0; } }
+.page-out { animation: pageOut 1.8s ease forwards; }
+
+/* ── Inputs ─────────────────────────────────────────────────── */
+input:focus, textarea:focus { outline: none; }
+
+/* ── Touch ──────────────────────────────────────────────────── */
+canvas { touch-action: none; }
+
+/* ── Heading font shorthand ─────────────────────────────────── */
+.font-display  { font-family: 'Playfair Display', serif; }
+.font-script   { font-family: 'Dancing Script', cursive; }
+.font-headline { font-family: 'Abril Fatface', cursive; }
