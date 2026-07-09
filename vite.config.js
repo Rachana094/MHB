@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/MHB/', // <-- This tells Vite to build paths correctly for GitHub Pages
+  base: './', // <-- Relative paths work out-of-the-box on Netlify, Vercel, and GitHub Pages
 })
