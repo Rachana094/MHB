@@ -38,7 +38,7 @@ function Lantern({ text, id, onGone }) {
       >
         {/* Sky Lantern SVG */}
         <div className="relative flex items-center justify-center">
-          <svg viewBox="0 0 100 130" className="w-16 h-20 drop-shadow-[0_0_20px_rgba(255,179,71,0.85)]">
+          <svg viewBox="0 0 100 130" className="w-28 h-36 drop-shadow-[0_0_25px_rgba(255,179,71,0.9)]">
             <defs>
               <radialGradient id={`flame-${id}`} cx="50%" cy="80%" r="60%">
                 <stop offset="0%" stopColor="#ffffff" />
@@ -67,26 +67,27 @@ function Lantern({ text, id, onGone }) {
           </svg>
 
           {/* Wish text inside lantern */}
-          <div className="absolute inset-0 flex items-center justify-center p-3 text-center">
+          <div className="absolute inset-x-0 top-6 bottom-8 flex items-center justify-center px-4 py-2 text-center">
             <p
-              className="leading-tight font-display italic font-semibold text-stone-900/90"
+              className="leading-tight font-serif italic font-bold text-[#1f0b02]"
               style={{
-                fontSize: '7.5px',
-                maxWidth: '48px',
+                fontSize: '11px',
+                maxWidth: '78px',
                 wordBreak: 'break-word',
-                lineHeight: 1.1,
+                lineHeight: 1.25,
+                textShadow: '0 0.5px 0.5px rgba(255,255,255,0.45)',
               }}
             >
-              {text.length > 40 ? text.slice(0, 37) + '…' : text}
+              {text.length > 55 ? text.slice(0, 52) + '…' : text}
             </p>
           </div>
         </div>
 
         {/* Hanging Thread & Crimson Tassel */}
         <div className="flex flex-col items-center mt-[-3px]">
-          <div className="w-[1px] h-6 bg-amber-500/40" />
-          <div className="w-1.5 h-1.5 rounded-full bg-red-600/80 shadow-[0_0_8px_#ef4444]" />
-          <div className="w-[1px] h-4 bg-red-500/60" />
+          <div className="w-[1px] h-8 bg-amber-500/40" />
+          <div className="w-2 h-2 rounded-full bg-red-600/80 shadow-[0_0_8px_#ef4444]" />
+          <div className="w-[1px] h-5 bg-red-500/60" />
         </div>
       </div>
     </div>
