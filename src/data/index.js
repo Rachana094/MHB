@@ -56,15 +56,6 @@ export const photoBoothData = [
     caption: "Growing pains & golden afternoons",
     story: "idu nenp idy ninge vand dina havattu van bandiralla en hagirutto ast nenp illa but nav ibru gate hatra hogirtivi alli halla dalli baro nerinalli vand yedi bandirutte ninu adunna nange hedidu kottu irtiya... nangu innu nenp ide adunna idkonke havttu est baya battidde anta!!",
   },
-  {
-    id: 3,
-    era: "Recent Chapter",
-    year: "Recent",
-    photoUrl: photo3,
-    photoAlt: "Recent photo",
-    caption: "The version of us we became",
-    story: "one beautifull chapter that ended without the desination.... kelvandra runa devru aste kottirtne after tht it wil became the star in constillation ",
-  },
 ];
 
 

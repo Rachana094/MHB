@@ -1,58 +1,132 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { Sparkles, Compass } from 'lucide-react';
 
-// ── Single floating lantern ──────────────────────────────────────────────────
+const wishInspirations = [
+  "For eternal peace, laughter, and endless starlight.",
+  "May your future be as bright and beautiful as your smile.",
+  "Wishing you health, endless adventures, and quiet joy.",
+  "To always finding your way back to your truest self.",
+  "May every path you walk lead you to success and warmth.",
+];
+
+// ── Sky Lantern Component ───────────────────────────────────────────────────
 function Lantern({ text, id, onGone }) {
-  const hues = [25, 12, 340, 5]; // Orange, peach, rose, gold-red warm tones
+  const hues = [25, 15, 340, 8, 42]; // Orange, gold, warm rose, peach, yellow
   const hue = hues[id % hues.length];
-  const leftPct = 15 + (id * 23) % 70; // Drifts evenly across viewport
+  const leftPct = 10 + (id * 27) % 80; // Drifts evenly across viewport
+  
+  // Custom flight duration and delay for natural variance
+  const duration = 16 + (id % 5) * 2; 
+  const swayDuration = 4 + (id % 3) * 1.5;
 
   return (
     <div
-      className="lantern-fly absolute flex flex-col items-center gap-1 select-none pointer-events-none"
-      style={{ bottom: 80, left: `${leftPct}%`, transform: 'translateX(-50%)' }}
+      className="absolute flex flex-col items-center select-none pointer-events-none z-20"
+      style={{
+        bottom: -150,
+        left: `${leftPct}%`,
+        animation: `floatUp ${duration}s linear forwards`,
+      }}
       onAnimationEnd={onGone}
     >
-      {/* Lantern shape */}
+      {/* Animated container for swaying and flickering */}
       <div
+        className="flex flex-col items-center"
         style={{
-          width: 64,
-          height: 84,
-          borderRadius: '45% 45% 50% 50% / 30% 30% 70% 70%',
-          background: `radial-gradient(ellipse at 40% 30%, hsl(${hue},100%,88%) 0%, hsl(${hue},95%,65%) 40%, hsl(${hue},85%,40%) 100%)`,
-          boxShadow: `0 0 25px 8px hsla(${hue},90%,60%,0.6), 0 0 60px 25px hsla(${hue},90%,50%,0.3)`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 8,
-          position: 'relative',
+          animation: `sway ${swayDuration}s ease-in-out infinite alternate, flicker 0.4s ease-in-out infinite alternate`,
         }}
       >
-        {/* Wish text inside lantern */}
-        <p
-          className="text-center leading-tight font-semibold"
-          style={{ fontSize: 8, color: 'rgba(50,15,0,0.88)', maxWidth: 50, wordBreak: 'break-word', fontFamily: "'Inter', sans-serif" }}
-        >
-          {text.length > 35 ? text.slice(0, 35) + '…' : text}
-        </p>
-        
-        {/* Bottom flame glow */}
+        {/* Sky Lantern SVG */}
+        <div className="relative flex items-center justify-center">
+          <svg viewBox="0 0 100 130" className="w-16 h-20 drop-shadow-[0_0_20px_rgba(255,179,71,0.85)]">
+            <defs>
+              <radialGradient id={`flame-${id}`} cx="50%" cy="80%" r="60%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="25%" stopColor="#fff2cc" />
+                <stop offset="55%" stopColor={`hsl(${hue}, 100%, 65%)`} />
+                <stop offset="100%" stopColor={`hsl(${hue}, 95%, 35%)`} />
+              </radialGradient>
+            </defs>
+            {/* Lantern Outer Body */}
+            <path
+              d="M20,20 C35,10 65,10 80,20 L75,105 C70,108 30,108 25,105 Z"
+              fill={`url(#flame-${id})`}
+              opacity="0.96"
+            />
+            {/* Lantern Inner Glow */}
+            <path
+              d="M32,32 C42,26 58,26 68,32 L64,98 C60,100 40,100 36,98 Z"
+              fill="#ffffff"
+              opacity="0.22"
+            />
+            {/* Base Ring */}
+            <path
+              d="M24,105 C32,108 68,108 76,105 L75,108 C67,111 33,111 25,108 Z"
+              fill="#5c1a00"
+            />
+          </svg>
+
+          {/* Wish text inside lantern */}
+          <div className="absolute inset-0 flex items-center justify-center p-3 text-center">
+            <p
+              className="leading-tight font-display italic font-semibold text-stone-900/90"
+              style={{
+                fontSize: '7.5px',
+                maxWidth: '48px',
+                wordBreak: 'break-word',
+                lineHeight: 1.1,
+              }}
+            >
+              {text.length > 40 ? text.slice(0, 37) + '…' : text}
+            </p>
+          </div>
+        </div>
+
+        {/* Hanging Thread & Crimson Tassel */}
+        <div className="flex flex-col items-center mt-[-3px]">
+          <div className="w-[1px] h-6 bg-amber-500/40" />
+          <div className="w-1.5 h-1.5 rounded-full bg-red-600/80 shadow-[0_0_8px_#ef4444]" />
+          <div className="w-[1px] h-4 bg-red-500/60" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Firefly particles component ──────────────────────────────────────────────
+function Fireflies() {
+  const [flies, setFlies] = useState([]);
+  
+  useEffect(() => {
+    // Populate initial fireflies
+    const initialFlies = Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 2 + 1,
+      delay: Math.random() * 5,
+      duration: Math.random() * 6 + 4,
+    }));
+    setFlies(initialFlies);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {flies.map((f) => (
         <div
+          key={f.id}
+          className="absolute rounded-full bg-amber-400/70"
           style={{
-            position: 'absolute',
-            bottom: -5,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 10,
-            height: 16,
-            background: 'radial-gradient(circle, #fff 0%, #FFB347 50%, transparent 100%)',
-            borderRadius: '50% 50% 0 0',
-            filter: 'blur(1px)',
-            animation: 'flicker 0.25s infinite alternate',
+            left: `${f.x}%`,
+            top: `${f.y}%`,
+            width: f.size,
+            height: f.size,
+            boxShadow: '0 0 10px #f59e0b, 0 0 4px #fbbf24',
+            animation: `fireflyFloat ${f.duration}s ease-in-out infinite alternate`,
+            animationDelay: `${f.delay}s`,
           }}
         />
-      </div>
-      {/* Lantern thread / tassel */}
-      <div style={{ width: 1, height: 18, background: 'rgba(255,179,71,0.4)' }} />
+      ))}
     </div>
   );
 }
@@ -61,7 +135,9 @@ export default function Stage6Lantern({ onNext }) {
   const [wish, setWish] = useState('');
   const [lanterns, setLanterns] = useState([]);
   const [released, setReleased] = useState([]);
+  const [showNextButton, setShowNextButton] = useState(false);
   const counter = useRef(0);
+  const [insIndex, setInsIndex] = useState(0);
 
   const release = () => {
     const text = wish.trim();
@@ -70,6 +146,16 @@ export default function Stage6Lantern({ onNext }) {
     setLanterns((prev) => [...prev, { id, text }]);
     setReleased((prev) => [...prev, text]);
     setWish('');
+    
+    // Unlocks final navigation after releasing at least one lantern
+    if (!showNextButton) {
+      setTimeout(() => setShowNextButton(true), 1500);
+    }
+  };
+
+  const getInspiration = () => {
+    setWish(wishInspirations[insIndex]);
+    setInsIndex((prev) => (prev + 1) % wishInspirations.length);
   };
 
   const removeLantern = (id) => {
@@ -77,64 +163,135 @@ export default function Stage6Lantern({ onNext }) {
   };
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-8 md:py-16 overflow-hidden">
-      {/* Floating lanterns overlay */}
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 20 }}>
+    <div className="relative z-10 flex flex-col items-center justify-start min-h-screen px-4 py-8 md:py-16 overflow-hidden">
+      
+      {/* Styles injector for custom celestial effects */}
+      <style>{`
+        @keyframes floatUp {
+          0% {
+            transform: translateY(100vh) scale(0.65);
+            opacity: 0;
+          }
+          5% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 0.95;
+          }
+          100% {
+            transform: translateY(-135vh) scale(1.1);
+            opacity: 0;
+          }
+        }
+        @keyframes sway {
+          0% { transform: rotate(-3deg) translateX(-8px); }
+          100% { transform: rotate(3deg) translateX(8px); }
+        }
+        @keyframes flicker {
+          0% { transform: scale(0.98); opacity: 0.92; }
+          100% { transform: scale(1.02); opacity: 1; }
+        }
+        @keyframes fireflyFloat {
+          0% { transform: translateY(0) translateX(0); opacity: 0.2; }
+          50% { opacity: 0.9; }
+          100% { transform: translateY(-40px) translateX(15px); opacity: 0.2; }
+        }
+        .custom-textarea::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-textarea::-webkit-scrollbar-thumb {
+          background: rgba(255,179,71,0.2);
+          border-radius: 4px;
+        }
+      `}</style>
+
+      {/* Magical fireflies and ambient sky decorations */}
+      <Fireflies />
+
+      {/* Floating lanterns layer */}
+      <div className="fixed inset-0 pointer-events-none z-10">
         {lanterns.map((l) => (
           <Lantern key={l.id} id={l.id} text={l.text} onGone={() => removeLantern(l.id)} />
         ))}
       </div>
 
-      <div className="text-center mb-6 relative z-10">
-        <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-2" style={{ color: '#FFB347' }}>Chapter Six</p>
+      <div className="text-center mb-8 relative z-10 flex-shrink-0">
+        <p className="text-xs font-semibold tracking-[0.35em] uppercase mb-2" style={{ color: '#FFB347' }}>Chapter Six</p>
         <h2 className="font-display text-3xl md:text-5xl text-white text-center mb-3 leading-tight">
           The Lantern Release
         </h2>
         <p className="text-white/60 text-xs md:text-sm max-w-xs md:max-w-sm mx-auto leading-relaxed font-light">
-          Type a wish or a dream for your future.<br />
-          Watch it float up into the galaxy.
+          Send your wishes or dreams into the starry skies. Watch them float upward into the galaxy.
         </p>
       </div>
 
-      <div className="w-full max-w-md relative z-10 glass p-6 md:p-8" style={{ boxShadow: '0 0 60px rgba(255,179,71,0.06)' }}>
-        <textarea
-          value={wish}
-          onChange={(e) => setWish(e.target.value)}
-          placeholder="I wish for..."
-          rows={3}
-          className="w-full bg-transparent resize-none text-white/90 placeholder-white/25 text-base leading-relaxed border-b pb-2 mb-5 focus:outline-none"
-          style={{
-            borderColor: 'rgba(255,179,71,0.3)',
-            fontFamily: "'Playfair Display', serif",
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              release();
-            }
-          }}
-        />
+      <div 
+        className="w-full max-w-md relative z-10 p-6 md:p-8 rounded-3xl overflow-hidden flex-shrink-0"
+        style={{
+          background: 'rgba(20, 15, 35, 0.85)',
+          border: '1px solid rgba(255,179,71,0.18)',
+          boxShadow: '0 0 60px rgba(255,179,71,0.06), inset 0 0 20px rgba(255,255,255,0.02)',
+          backdropFilter: 'blur(16px)',
+        }}
+      >
+        <div className="relative">
+          <textarea
+            value={wish}
+            onChange={(e) => setWish(e.target.value)}
+            placeholder="Write a wish for the future..."
+            rows={3}
+            className="w-full bg-transparent resize-none text-white/95 placeholder-white/20 text-base leading-relaxed border-b pb-2 mb-3 focus:outline-none custom-textarea"
+            style={{
+              borderColor: 'rgba(255,179,71,0.25)',
+              fontFamily: "'Playfair Display', serif",
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                release();
+              }
+            }}
+          />
+          
+          {/* Sparkly inspiration helper button */}
+          <button 
+            type="button"
+            onClick={getInspiration}
+            className="flex items-center gap-1.5 text-[10.5px] font-medium tracking-wide text-amber-300/70 hover:text-amber-300 transition-colors mb-5 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Need inspiration? Click for an idea
+          </button>
+        </div>
         
         <button
           onClick={release}
           disabled={!wish.trim()}
-          className="btn-primary w-full text-sm py-3"
+          className="btn-primary w-full text-sm py-3.5 cursor-pointer flex items-center justify-center gap-2"
           style={{
-            background: 'linear-gradient(135deg, #FFB347, #FF6B9D, #C084FC)',
-            boxShadow: '0 4px 24px rgba(255,179,71,0.35)',
+            background: wish.trim() 
+              ? 'linear-gradient(135deg, #FFB347, #FF6B9D, #C084FC)' 
+              : 'rgba(255,255,255,0.04)',
+            color: wish.trim() ? '#fff' : 'rgba(255,255,255,0.25)',
+            border: wish.trim() ? 'none' : '1px solid rgba(255,255,255,0.05)',
+            boxShadow: wish.trim() ? '0 4px 25px rgba(255,179,71,0.3)' : 'none',
           }}
         >
-          🏮 Release into the Universe
+          <span>🏮 Release into the Universe</span>
         </button>
 
         {released.length > 0 && (
-          <div className="mt-6 space-y-2">
-            <p className="text-[10px] font-semibold tracking-widest uppercase text-white/40">
+          <div className="mt-6 pt-5 border-t border-white/5 space-y-2">
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-amber-500/50">
               Released Wishes
             </p>
-            <div className="max-h-24 overflow-y-auto pr-2 space-y-1.5">
+            <div className="max-h-24 overflow-y-auto pr-2 space-y-2">
               {released.map((w, i) => (
-                <p key={i} className="text-white/70 text-xs md:text-sm italic font-light" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <p 
+                  key={i} 
+                  className="text-white/80 text-xs md:text-sm italic font-light leading-relaxed fade-in" 
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
                   ✦ "{w}"
                 </p>
               ))}
@@ -143,9 +300,34 @@ export default function Stage6Lantern({ onNext }) {
         )}
       </div>
 
-      <button onClick={onNext} className="btn-primary mt-10 relative z-10">
-        Read the final letter →
-      </button>
+      {/* Elegant Silhouette of Distant Lake & Mountains */}
+      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-0 overflow-hidden select-none">
+        {/* Distant Hills */}
+        <svg className="absolute bottom-0 w-full h-16 text-[#040209]" viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,150 C280,110 520,170 760,130 C1000,90 1200,160 1440,120 L1440,200 L0,200 Z" />
+        </svg>
+        {/* Midground Hills */}
+        <svg className="absolute bottom-0 w-full h-10 text-[#090514] opacity-90" viewBox="0 0 1440 200" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,165 C400,140 800,190 1200,150 L1440,175 L1440,200 L0,200 Z" />
+        </svg>
+        {/* Water reflection glow */}
+        <div className="absolute bottom-0 inset-x-0 h-4 bg-gradient-to-t from-amber-500/10 to-transparent blur-md" />
+      </div>
+
+      {showNextButton && (
+        <button 
+          onClick={onNext} 
+          className="btn-primary mt-8 relative z-10 fade-in flex items-center gap-2"
+          style={{
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.1)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+          }}
+        >
+          <Compass className="w-4 h-4 text-pink-400" />
+          <span>Read the final letter →</span>
+        </button>
+      )}
     </div>
   );
 }

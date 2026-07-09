@@ -84,7 +84,7 @@ function FilmFrame({ item, index, active }) {
         ))}
       </div>
 
-      <p className="text-white/30 text-xs tracking-[0.2em] font-mono mt-1">FRAME 0{index + 1} OF 03</p>
+      <p className="text-white/30 text-xs tracking-[0.2em] font-mono mt-1">FRAME 0{index + 1} OF 0{photoBoothData.length}</p>
     </div>
   );
 }
